@@ -26,7 +26,7 @@ TARGET_JUPYTER="$(which jupyter)"
 echo "::: Installing geopyter_magic..."
 sudo -H $TARGET_PIP install . || true
 echo "::: Installing geopyter into Jupyter NBExtensions..."
-sudo $TARGET_JUPYTER nbextension install geopyter_magic/assets/js/geopyter.js || true
+sudo $TARGET_JUPYTER nbextension install geopyter_magic/geopyter.js || true
 echo "::: Enabling geopyter in Jupyter..."
 sudo $TARGET_JUPYTER nbextension enable geopyter || true
 echo "::: Registering geopyter_magic with Jupyter..."

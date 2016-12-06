@@ -2,14 +2,14 @@
     if (typeof define === 'function' && define.amd) {
         // http://localhost:8888/ also works here
         define(['exports',
-                '../../nbextensions/d3js_v4.4/d3.v4.4.min.js',
-                '../../nbextensions/leaflet_v1.0.2/leaflet.v1.0.2.min.js'],
+                '../../nbextensions/d3js/d3.v4.4.min.js',
+                '../../nbextensions/leaflet/leaflet.v1.0.2.min.js'],
                 factory);
     } else if (typeof module === 'object' && module.exports) {
         module.exports = factory(
             requirejs['exports',
-                    '../../nbextensions/d3js_v4.4/d3.v4.4.min.js',
-                    '../../nbextensions/leaflet_v1.0.2/leaflet.v1.0.2.min.js']);
+                    '../../nbextensions/d3js/d3.v4.4.min.js',
+                    '../../nbextensions/leaflet/leaflet.v1.0.2.min.js']);
     } else {
         factory((root.geopyter = {}), root);
     }
@@ -167,7 +167,7 @@ exports.test = test;
 
 exports.load_ipython_extension = function() {
     console.log('geopyter - loading css');
-    loadCss('../../nbextensions/leaflet_v1.0.2/leaflet.css');
+    loadCss('../../nbextensions/leaflet/leaflet.css');
     loadCss('../../nbextensions/geopyter/geopyter.css');
 };
 

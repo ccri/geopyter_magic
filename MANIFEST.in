@@ -1,2 +1,3 @@
 include install.sh
 recursive-include geopyter_magic *
+recursive-include external *
