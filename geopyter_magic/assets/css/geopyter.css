@@ -1,0 +1,14 @@
+/* leaflet image alignment fix */
+img {
+    margin-top: 0 !important
+}
+
+/* d3 histogram */
+.bar rect {
+  fill: steelblue;
+}
+
+.bar text {
+  fill: #000;
+  font: 10px sans-serif;
+}

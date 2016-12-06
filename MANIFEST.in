@@ -1,0 +1,2 @@
+include install.sh
+recursive-include geopyter_magic *
