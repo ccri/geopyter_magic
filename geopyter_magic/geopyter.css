@@ -4,7 +4,7 @@ img {
 }
 
 /* d3 histogram */
-.bar rect {
+.bar {
   fill: steelblue;
 }
 

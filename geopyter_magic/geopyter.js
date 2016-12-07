@@ -103,28 +103,26 @@ var histogram = function(hgramElemId, data, element) {
         
     var svg = d3.select('#'+hgramElemId)
         .append('svg')
-        .attr('width', 960)
-        .attr('height', 480);
+            .attr('viewBox', '0 0 960 480')
+            .attr('width', 960)
+            .attr('height', 480);
 
     var margin = {top: 20, right: 0, bottom: 20, left: 0},
         width = svg.attr('width') - margin.left - margin.right,
         height = svg.attr('height') - margin.top - margin.bottom,
         g = svg.append('g')
             .attr('transform', 'translate('+margin.left+','+margin.top+')');
-    
-    var x = d3.scaleLinear().rangeRound([0, width])
+
+    var histogram = d3.histogram()(data);
+
+    var xScale = d3.scaleLinear().rangeRound([0, width])
             .domain([d3.min(data, function(d) { return d; }),
                 d3.max(data, function(d) { return d; })])
             .range([margin.left, width]);
-//     var x = d3.scaleOrdinal().range([0, width]);
-    
-    var histogram = d3.histogram()
-//         .thresholds(x.ticks())
-        (data);
-    
-    console.log(histogram);
-        
-    var y = d3.scaleLinear()
+
+    var xAxis = d3.axisBottom(xScale);
+            
+    var yScale = d3.scaleLinear()
         .domain([0, d3.max(histogram, function(d) { return d.length; })])
         .range([height, 0]);
     
@@ -133,16 +131,13 @@ var histogram = function(hgramElemId, data, element) {
         .enter().append('g')
             .attr('class', 'bar')
             .attr('transform', function(d) {
-                return 'translate('+x(d.x0)+','+y(d.length)+')';
+                return 'translate('+xScale(d.x0)+','+yScale(d.length)+')';
             });
     
-    console.log('x0: ' + x(histogram[0].x0));
-    console.log('x1: ' + x(histogram[0].x1));
-    console.log('x(): ' + x);
     bar.append('rect')
         .attr('x', 1)
         .attr('width', width / histogram.length) // x(histogram[0].x1) - x(histogram[0].x0)
-        .attr('height', function(d) { return height - y(d.length); });
+        .attr('height', function(d) { return height - yScale(d.length); });
     
     bar.append('text')
         .attr('dy', '.75em')
@@ -154,16 +149,74 @@ var histogram = function(hgramElemId, data, element) {
     g.append('g')
         .attr('class', 'axis axis--x')
         .attr('transform', 'translate(0,' + height + ')')
-        .call(d3.axisBottom(x));
+        .call(xAxis);
 };
+
+var timeSeries = function(tsElemId, data, element) {
+    if (document.getElementById(tsElemId) == null)
+        element.append($('<div/>', {id: tsElemId}));
+    
+    var svg = d3.select('#'+tsElemId)
+            .append('svg')
+                .attr('viewBox', '0 0 960 480')
+                .attr('width', 960)
+                .attr('height', 480)
+                .attr('class', 'timeSeries');
+
+    var margin = {top: 0, right: 20, bottom: 20, left: 30},
+        width = svg.attr('width') - margin.left - margin.right,
+        height = svg.attr('height') - margin.top - margin.bottom,
+        g = svg.append('g')
+            .attr('transform', 'translate('+margin.left+','+margin.top+')');
+    
+    var parseDate = d3.timeParse('%Y-%m-%d');
+    
+    var xScale = d3.scaleTime()
+            .domain([d3.min(data, function(d) { return d.date; }),
+                     d3.max(data, function(d) { return d.date; })])
+            .range([margin.left, width]);
+
+    var xAxis = d3.axisBottom()
+            .scale(xScale)
+            .tickFormat(d3.timeFormat('%Y-%m-%d'));
+    
+    var yScale = d3.scaleLinear()
+            .domain([0, d3.max(data, function(d) { return d.count; })])
+            .range([height, margin.bottom]);
+
+    var yAxis = d3.axisLeft()
+            .scale(yScale);
+    
+    g.append('g')
+        .attr('class', 'axis axis--x')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(xAxis);
+    
+    g.append('g')
+        .attr('class', 'axis axis--y')
+        .call(yAxis);
+    
+    var bar = g.selectAll('.bar')
+        .data(data)
+        .enter().append('g')
+            .attr('class', 'bar');
+
+    bar.append('rect')
+        .attr('class', 'databar')
+        .attr('x', function(d) { return xScale(d.date); })
+        .attr('y', function(d) { return yScale(d.count); })
+        .attr('width', width / data.length)
+        .attr('height', function(d) { return height - yScale(d.count); });
+}
 
 exports.leaflet = L;
 exports.d3 = d3;
 
+exports.test = test;
 exports.createLeaflet = createLeaflet;
 exports.geojsonToLeaflet = geojsonToLeaflet;
-exports.histogram = histogram; 
-exports.test = test;
+exports.histogram = histogram;
+exports.timeSeries = timeSeries;
 
 exports.load_ipython_extension = function() {
     console.log('geopyter - loading css');

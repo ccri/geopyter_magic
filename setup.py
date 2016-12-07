@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='geopyter_magic',
-      version='0.0.2',
+      version='0.0.3',
       author='Gerard C. Briones',
       author_email='gbriones@ccri.com',
       packages=find_packages(),
