@@ -34,5 +34,43 @@ class GeopyterMagic(Magics):
 
         return Javascript(js_template % line)
 
+    @line_magic
+    def json_to_histogram(self, line):
+        js_template = (
+            'requirejs(["../../nbextensions/geopyter/geopyter.js"], function(geopyter) {'
+            '   var xhr = new XMLHttpRequest();'
+            '   xhr.onreadystatechange = function() {'
+            '       if (this.readyState == 4 && this.status == 200) {'
+            '           var data = JSON.parse(this.response);'
+            '           console.log(data);'
+            '           geopyter.histogram("hg_0", data, element);'
+            '       }'
+            '   };'
+            '   xhr.open("GET", "%s", true);'
+            '   xhr.send();'
+            '});'
+        )
+
+        return Javascript(js_template % line)
+
+    @line_magic
+    def json_to_time_series(self, line):
+        js_template = (
+            'requirejs(["../../nbextensions/geopyter/geopyter.js"], function(geopyter) {'
+            '   var xhr = new XMLHttpRequest();'
+            '   xhr.onreadystatechange = function() {'
+            '       if (this.readyState == 4 && this.status == 200) {'
+            '           var data = JSON.parse(this.response);'
+            '           console.log(data);'
+            '           geopyter.timeSeries("ts_0", data, element);'
+            '       }'
+            '   };'
+            '   xhr.open("GET", "%s", true);'
+            '   xhr.send();'
+            '});'
+        )
+
+        return Javascript(js_template % line)
+
 def load_ipython_extension(ipython):
     ipython.register_magics(GeopyterMagic)

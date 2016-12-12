@@ -1,9 +1,10 @@
 from setuptools import setup, find_packages
 
 setup(name='geopyter_magic',
-      version='0.0.3',
+      version='0.0.1',
       author='Gerard C. Briones',
       author_email='gbriones@ccri.com',
+      url='https://github.com/ccri/geopyter_magic',
       packages=find_packages(),
       install_requires=[
           'ipython',

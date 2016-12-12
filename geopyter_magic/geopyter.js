@@ -97,8 +97,6 @@ var histogram = function(hgramElemId, data, element) {
     if (document.getElementById(hgramElemId) === null)
         element.append($('<div/>', {id: hgramElemId}));
         
-    data = d3.range(10000).map(d3.randomNormal(1000, 100)); // temporary
-    console.log(data);
     var formatCount = d3.format(",.0f");
         
     var svg = d3.select('#'+hgramElemId)
@@ -135,20 +133,19 @@ var histogram = function(hgramElemId, data, element) {
             });
     
     bar.append('rect')
-        .attr('x', 1)
-        .attr('width', width / histogram.length) // x(histogram[0].x1) - x(histogram[0].x0)
+        .attr('width', width / histogram.length)
         .attr('height', function(d) { return height - yScale(d.length); });
     
     bar.append('text')
         .attr('dy', '.75em')
         .attr('y', -10)
-        .attr('x', width / histogram.length / 2) // (x(histogram[0].x1) - x(histogram[0].x0))
+        .attr('x', width / histogram.length / 2)
         .attr('text-anchor', 'middle')
         .text(function(d) { return formatCount(d.length); });
     
     g.append('g')
         .attr('class', 'axis axis--x')
-        .attr('transform', 'translate(0,' + height + ')')
+        .attr('transform', 'translate(0,'+height+')')
         .call(xAxis);
 };
 
@@ -170,10 +167,10 @@ var timeSeries = function(tsElemId, data, element) {
             .attr('transform', 'translate('+margin.left+','+margin.top+')');
     
     var parseDate = d3.timeParse('%Y-%m-%d');
-    
+
     var xScale = d3.scaleTime()
-            .domain([d3.min(data, function(d) { return d.date; }),
-                     d3.max(data, function(d) { return d.date; })])
+            .domain([d3.min(data, function(d) { return parseDate(d.date); }),
+                     d3.max(data, function(d) { return parseDate(d.date); })])
             .range([margin.left, width]);
 
     var xAxis = d3.axisBottom()
@@ -189,7 +186,7 @@ var timeSeries = function(tsElemId, data, element) {
     
     g.append('g')
         .attr('class', 'axis axis--x')
-        .attr('transform', 'translate(0,' + height + ')')
+        .attr('transform', 'translate(0,'+height+')')
         .call(xAxis);
     
     g.append('g')
@@ -203,7 +200,7 @@ var timeSeries = function(tsElemId, data, element) {
 
     bar.append('rect')
         .attr('class', 'databar')
-        .attr('x', function(d) { return xScale(d.date); })
+        .attr('x', function(d) { return xScale(parseDate(d.date)); })
         .attr('y', function(d) { return yScale(d.count); })
         .attr('width', width / data.length)
         .attr('height', function(d) { return height - yScale(d.count); });
