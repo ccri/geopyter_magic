@@ -2,6 +2,8 @@ from IPython.core.magic import (Magics, magics_class, line_magic, cell_magic,
     line_cell_magic)
 from IPython.display import (HTML, Javascript)
 
+import ast
+
 @magics_class
 class GeopyterMagic(Magics):
     @line_magic
@@ -71,6 +73,16 @@ class GeopyterMagic(Magics):
         )
 
         return Javascript(js_template % line)
+
+    @line_magic
+    def typeof_var(self, line):
+        output = ast.literal_eval(line)
+        # py_dict = json.loads(line)
+        # sum = 0
+        # for n in line:
+        #     sum += int(n)
+
+        print type(output), output
 
 def load_ipython_extension(ipython):
     ipython.register_magics(GeopyterMagic)

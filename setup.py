@@ -1,6 +1,18 @@
 from setuptools import setup, find_packages
+# from setuptools.command.install import install
+# from subprocess import check_output
 
-setup(name='geopyter_magic',
+# class JupyterExtensionInstall(install):
+#     """Custom install setup to help run shell commands to register the
+#         extensions with jupyter"""
+#     def run(self):
+#         check_output('jupyter nbextension install geopyter_magic/geopyter.js', shell=True)
+#         check_output('jupyter nbextension enable geopyter', shell=True)
+#         check_output('jupyter serverextension enable --py geopyter_magic', shell=True)
+#         install.run(self)
+
+setup(#cmdclass={'install': JupyterExtensionInstall},
+      name='geopyter_magic',
       version='0.0.1',
       author='Gerard C. Briones',
       author_email='gbriones@ccri.com',
