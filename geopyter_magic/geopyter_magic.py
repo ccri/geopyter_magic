@@ -3,6 +3,8 @@ from IPython.core.magic import (Magics, magics_class, line_magic, cell_magic,
 from IPython.display import (HTML, Javascript)
 
 import ast
+import os
+import requests
 
 @magics_class
 class GeopyterMagic(Magics):
@@ -83,6 +85,24 @@ class GeopyterMagic(Magics):
         #     sum += int(n)
 
         print type(output), output
+
+    @line_cell_magic
+    def geopyter(self, line, cell=None):
+
+        if cell is not None:
+            line += ' ' + cell.replace('\n', ' ')
+
+        args = line.strip().split(' ')
+
+        cleaned_args = {}
+        for arg in args:
+            arg = arg.replace(')', '')
+            key, value = arg.split('(')
+            cleaned_args[key] = value
+
+        r = requests.post('http://localhost:8888/geopyter', json=cleaned_args)
+        print r.json()
+        print os.environ
 
 def load_ipython_extension(ipython):
     ipython.register_magics(GeopyterMagic)

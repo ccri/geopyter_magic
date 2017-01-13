@@ -20,7 +20,8 @@ setup(#cmdclass={'install': JupyterExtensionInstall},
       packages=find_packages(),
       install_requires=[
           'ipython',
-          'jupyter'
+          'jupyter',
+          'requests'
       ],
       data_files=[
           ('share/jupyter/nbextensions', [
